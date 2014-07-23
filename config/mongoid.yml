@@ -4,3 +4,8 @@ development:
       database: test
       hosts:
         - 0.0.0.0:27017
+
+production:
+  sessions:
+    default:
+      uri: mongodb://remote-timer:alocsmey@kahana.mongohq.com:10082/remote-timers

@@ -5,7 +5,7 @@ require 'mongoid'
 require_relative 'models/timer'
 
 class RemoteTimer < Sinatra::Base
-  register Sinatra::Reloader
+  register Sinatra::Reloader if development?
   register Sinatra::AssetPack
 
   assets do
