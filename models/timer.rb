@@ -5,5 +5,5 @@ class Timer
 
   field :name, type: String
   field :running, type: Boolean
-  field :elapsed_time, type: Time
+  field :started_at, type: Time
 end

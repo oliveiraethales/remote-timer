@@ -1,8 +1,14 @@
 <% @timers.each do |t| %>
-  <%= t.name %>
-<% end %>
+  Name: <%= t.name %>
+  <br>
+  Running: <%= t.running ? 'Yes' : 'No' %>
+  <br>
+  Started at: <%= t.started_at.to_s %>
 
-<br>
-<br>
+  Elapsed: <span id="elapsed-time"></span>
+
+  <br>
+  <br>
+<% end %>
 
 <a href="/new">Add Timer</a>
