@@ -1,14 +1,29 @@
-<% @timers.each do |t| %>
-  Name: <%= t.name %>
-  <br>
-  Running: <%= t.running ? 'Yes' : 'No' %>
-  <br>
-  Started at: <%= t.started_at.to_s %>
+<div class="row">
+  <div class="col-lg-6">
+    <% @timers.each do |t| %>
+      <ul id="<%= t._id %>" class="listr-group">
+        <li class="list-group-item">Name: <%= t.name %></li>
+        <li class="list-group-item running-status" data-running="<%= t.running %>">Running: <%= t.running ? 'Yes' : 'No' %></li>
+        <li class="list-group-item" data-started="<%= t.started_at %>">Started at: <%= t.started_at.to_s %></li>
+        <li class="list-group-item timer-actions">
+          <% if t.running %>
+            <a href='stop'>Stop</a>
+          <% else %>
+            <a href='stop'>Start</a>
+          <% end %>
 
-  Elapsed: <span id="elapsed-time"></span>
+          <a href='restart'>Restart</a>
+        </li>
+      </ul>
+      
+      <br>
 
-  <br>
-  <br>
-<% end %>
-
-<a href="/new">Add Timer</a>
+      <div id="timer-<%= t._id %>" data-date="<%= t.started_at %>"></div>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <a href="/new">Add Timer</a>
+  </div>
+</div>

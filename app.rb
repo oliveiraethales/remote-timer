@@ -10,13 +10,18 @@ class RemoteTimer < Sinatra::Base
 
   assets do
     js :application, [
-      '/js/jquery.js'
+      '/js/jquery.js',
+      '/js/time-circles.js',
+      '/js/index.js'
     ]
 
-    js_compression :jsmin
+    css :application, [
+      '/css/time-circles.css',
+      '/css/index.css'
+    ]
   end
 
-  Mongoid.load!("config/mongoid.yml")
+  Mongoid.load!('config/mongoid.yml')
 
   get '/' do
     @timers = Timer.all
@@ -39,6 +44,31 @@ class RemoteTimer < Sinatra::Base
     timer.save
 
     erb :index
+  end
+
+  post '/start/:id' do
+    timer = Timer.find params[:id]
+    timer.running = true    
+    timer.save
+
+    erb :index, layout: false
+  end
+
+  post '/stop/:id' do
+    timer = Timer.find params[:id]
+    timer.running = false
+    timer.save
+
+    200
+  end
+
+  post '/restart/:id' do
+    timer = Timer.find params[:id]
+    timer.running = true
+    timer.started_at = Time.now
+    timer.save
+
+    200
   end
 
   run! if app_file == $0
