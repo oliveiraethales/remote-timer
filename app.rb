@@ -11,6 +11,7 @@ class RemoteTimer < Sinatra::Base
   assets do
     js :application, [
       '/js/jquery.js',
+      '/js/jquery.pjax.js',
       '/js/time-circles.js',
       '/js/index.js'
     ]
@@ -48,7 +49,7 @@ class RemoteTimer < Sinatra::Base
 
   post '/start/:id' do
     timer = Timer.find params[:id]
-    timer.running = true    
+    timer.running = true
     timer.save
 
     erb :index, layout: false
@@ -59,7 +60,7 @@ class RemoteTimer < Sinatra::Base
     timer.running = false
     timer.save
 
-    200
+    erb :index, layout: false
   end
 
   post '/restart/:id' do
@@ -68,7 +69,7 @@ class RemoteTimer < Sinatra::Base
     timer.started_at = Time.now
     timer.save
 
-    200
+    erb :index, layout: false
   end
 
   run! if app_file == $0

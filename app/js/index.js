@@ -11,8 +11,9 @@ $(function () {
     var id = $(this).parents('ul').attr('id'),
         url = '/start/' + id;
 
-    $.post(url, function(data) {
-      alert(data);
+    $('body').load(url, function(resp, stat, xhr) {
+      console.log(resp);
+      console.log(stat);
     });
 
     $('#timer-' + id).TimeCircles().start();
@@ -24,8 +25,9 @@ $(function () {
     var id = $(this).parents('ul').attr('id'),
         url = '/stop/' + id;
 
-    $.post(url, function(data) {
-      alert(data);
+    $('body').load(url, function(resp, stat, xhr) {
+      console.log(resp);
+      console.log(stat);
     });
 
     $('#timer-' + id).TimeCircles().stop();
@@ -37,8 +39,9 @@ $(function () {
     var id = $(this).parents('ul').attr('id'),
         url = '/restart/' + id;
 
-    $.post(url, function(data) {
-      alert(data);
+    $('body').load(url, function(resp, stat, xhr) {
+      console.log(resp);
+      console.log(stat);
     });
 
     $('#timer-' + id).TimeCircles().restart();
