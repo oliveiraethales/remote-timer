@@ -1,9 +1,7 @@
 development:
   sessions:
     default:
-      database: test
-      hosts:
-        - 0.0.0.0:27017
+      uri: mongodb://remote-timer:alocsmey@kahana.mongohq.com:10082/remote-timers
 
 production:
   sessions:

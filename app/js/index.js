@@ -1,51 +1,97 @@
 $(function () {
-  var runningTimers = $('[data-running="true"]');
-
-  runningTimers.each(function() {
-    var id = $(this).parent('ul').attr('id');
-
-    $('#timer-' + id).TimeCircles().start();
-  });
+  onLoad();
 
   $('a[href="start"]').click(function() {
     var id = $(this).parents('ul').attr('id'),
-        url = '/start/' + id;
+        url = '/start/' + id,
+        timer = $('#timer-' + id).TimeCircles();
 
-    $('body').load(url, function(resp, stat, xhr) {
-      console.log(resp);
-      console.log(stat);
+    $.ajax({
+      url: url,
+      type: 'PUT'
     });
 
-    $('#timer-' + id).TimeCircles().start();
+    timer.start();
 
     return false;
   });
 
   $('a[href="stop"]').click(function() {
     var id = $(this).parents('ul').attr('id'),
-        url = '/stop/' + id;
+        url = '/stop/' + id,
+        timer = $('#timer-' + id).TimeCircles(),
+        elapsed = timer.getTime();
 
-    $('body').load(url, function(resp, stat, xhr) {
-      console.log(resp);
-      console.log(stat);
+    $.ajax({
+      url: url,
+      data: {elapsed: elapsed},
+      type: 'PUT'
     });
 
-    $('#timer-' + id).TimeCircles().stop();
+    timer.stop();
 
     return false;
   });
 
   $('a[href="restart"]').click(function() {
     var id = $(this).parents('ul').attr('id'),
-        url = '/restart/' + id;
+        url = '/restart/' + id,
+        timer = $('#timer-' + id).TimeCircles();
 
-    $('body').load(url, function(resp, stat, xhr) {
-      console.log(resp);
-      console.log(stat);
+    timer.restart();
+
+    return false;
+  });
+
+  $('a[href="resume"]').click(function() {
+    var id = $(this).parents('ul').attr('id'),
+        url = '/resume/' + id,
+        timer = $('#timer-' + id).TimeCircles(),
+        elapsed = timer.getTime();
+
+    $.ajax({
+      url: url,
+      type: 'PUT',
+      success: function () {
+        alert('stopped');
+      }
     });
 
-    $('#timer-' + id).TimeCircles().restart();
+    timer.start();
+
+    return false;
+  });
+
+  $('a[href="delete"]').click(function() {
+    var id = $(this).parents('ul').attr('id'),
+        url = '/delete/' + id;
+
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function() {
+        alert('deleted');
+      }
+    });
 
     return false;
   });
 });
+
+function onLoad() {
+  var runningTimers = $('[data-running="true"]');
+
+  runningTimers.each(function() {
+    var parent = $(this).parent('ul'),
+        id = parent.attr('id'),
+        timer = $('#timer-' + id).TimeCircles(),
+        elapsed = parent.data('elapsed');
+
+    if (elapsed < 0) {
+      timer.start(elapsed);
+    } else {
+      timer.end().data('date', parent.data('started'));
+      timer.start();
+    }
+  });
+}

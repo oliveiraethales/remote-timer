@@ -1,24 +1,27 @@
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-lg-4">
     <% @timers.each do |t| %>
-      <ul id="<%= t._id %>" class="listr-group">
+      <ul id="<%= t._id %>" class="listr-group" data-elapsed="<%= t.elapsed %>" data-started="<%= t.started_at %>">
         <li class="list-group-item">Name: <%= t.name %></li>
         <li class="list-group-item running-status" data-running="<%= t.running %>">Running: <%= t.running ? 'Yes' : 'No' %></li>
         <li class="list-group-item" data-started="<%= t.started_at %>">Started at: <%= t.started_at.to_s %></li>
         <li class="list-group-item timer-actions">
           <% if t.running %>
-            <a href='stop'>Stop</a>
+            <a href='stop'>Stop</a> | 
+          <% elsif !t.running && t.elapsed && t.elapsed < 0 %>
+            <a href='resume'>Resume</a> | 
           <% else %>
-            <a href='start'>Start</a>
+            <a href='start'>Start</a> | 
           <% end %>
 
-          <a href='restart'>Restart</a>
+          <a href='restart'>Restart</a> | 
+          <a href='delete'>Delete</a>
         </li>
       </ul>
       
       <br>
 
-      <div id="timer-<%= t._id %>" data-date="<%= t.started_at %>"></div>
+      <div id="timer-<%= t._id %>"></div>
     <% end %>
   </div>
 </div>
